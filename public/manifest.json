@@ -1,0 +1,36 @@
+{
+  "manifest_version": 3,
+  "name": "自動字幕生成器",
+  "version": "1.0.0",
+  "description": "自動為網頁上的影片生成和添加字幕",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "scripting"
+  ],
+  "host_permissions": [
+    "http://*/*",
+    "https://*/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content-debug.js"
+      ],
+      "run_at": "document_end"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "自動字幕生成器"
+  },
+  "icons": {
+    "16": "icon16.png"
+  }
+}

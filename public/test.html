@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>字幕插件測試頁面</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .video-container {
+            position: relative;
+            margin: 20px 0;
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .instructions {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .debug-info {
+            background: #e8f4fd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎬 字幕插件測試頁面</h1>
+    
+    <div class="instructions">
+        <h3>測試步驟：</h3>
+        <ol>
+            <li>確保Chrome插件已安裝並啟用</li>
+            <li>點擊影片右上角的「字幕」按鈕</li>
+            <li>開始播放影片</li>
+            <li>觀察字幕是否出現</li>
+        </ol>
+    </div>
+
+    <div class="video-container">
+        <video controls>
+            <source src="https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4" type="video/mp4">
+            您的瀏覽器不支持影片播放。
+        </video>
+    </div>
+
+    <div class="video-container">
+        <video controls>
+            <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
+            您的瀏覽器不支持影片播放。
+        </video>
+    </div>
+
+    <div class="debug-info">
+        <h4>調試信息：</h4>
+        <div id="debug-output">等待插件載入...</div>
+        <button onclick="checkVideos()">檢查影片元素</button>
+        <button onclick="checkSubtitleManager()">檢查字幕管理器</button>
+        <button onclick="clearDebug()">清除調試信息</button>
+    </div>
+
+    <script>
+        function log(message) {
+            const debugOutput = document.getElementById('debug-output');
+            const timestamp = new Date().toLocaleTimeString();
+            debugOutput.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+            console.log(message);
+        }
+
+        function checkVideos() {
+            const videos = document.querySelectorAll('video');
+            log(`找到 ${videos.length} 個影片元素`);
+            videos.forEach((video, index) => {
+                log(`影片 ${index + 1}: src="${video.src}", paused=${video.paused}`);
+            });
+        }
+
+        function checkSubtitleManager() {
+            if (window.subtitleManager) {
+                log('字幕管理器已初始化');
+                log(`啟用狀態: ${window.subtitleManager.isEnabled}`);
+                log(`檢測到的影片數量: ${window.subtitleManager.videos.size}`);
+                log(`已生成字幕的影片數量: ${window.subtitleManager.subtitles.size}`);
+            } else {
+                log('字幕管理器未找到，請檢查插件是否正確載入');
+            }
+        }
+
+        function clearDebug() {
+            document.getElementById('debug-output').innerHTML = '調試信息已清除';
+        }
+
+        // 監聽影片事件
+        document.querySelectorAll('video').forEach((video, index) => {
+            video.addEventListener('play', () => {
+                log(`影片 ${index + 1} 開始播放`);
+            });
+            video.addEventListener('pause', () => {
+                log(`影片 ${index + 1} 暫停`);
+            });
+            video.addEventListener('timeupdate', () => {
+                if (video.currentTime % 5 < 0.1) { // 每5秒記錄一次
+                    log(`影片 ${index + 1} 播放時間: ${video.currentTime.toFixed(1)}s`);
+                }
+            });
+        });
+
+        // 檢查插件是否載入
+        setTimeout(() => {
+            if (window.subtitleManager) {
+                log('✅ 字幕插件已成功載入');
+            } else {
+                log('❌ 字幕插件未載入，請檢查插件設置');
+            }
+        }, 2000);
+    </script>
+</body>
+</html> 
