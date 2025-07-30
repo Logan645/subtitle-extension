@@ -103,14 +103,11 @@
     }
 
     .loading {
-      display: none;
       text-align: center;
       margin: 10px 0;
+      display: none;
     }
 
-    .loading.active {
-      display: block;
-    }
 
     .spinner {
       width: 20px;
@@ -125,6 +122,26 @@
     @keyframes spin {
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
+    }
+
+    .status-text {
+      transition: color 0.3s ease;
+    }
+
+    .info {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 15px;
+      border-radius: 8px;
+      font-size: 12px;
+      line-height: 1.4;
+      margin-bottom: 15px;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 10px;
+      opacity: 0.7;
+      margin-top: 10px;
     }
   </style>
 </head>
@@ -154,8 +171,13 @@
       <li>插件會自動檢測頁面上的影片</li>
       <li>點擊影片右上角的「字幕」按鈕啟用字幕</li>
       <li>字幕會在影片播放時自動生成和顯示</li>
-      <li>支持大多數影片網站</li>
+      <li>特別優化支持各類影片網站</li>
+      <li>如無法使用請重新載入頁面</li>
     </ul>
+  </div>
+
+  <div class="footer">
+    v1.1.0 - 增強版字幕生成器
   </div>
 
   <script src="popup.js"></script>
